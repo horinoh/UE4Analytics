@@ -1,0 +1,26 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{4836D96A-4401-887C-E0CA-40B59FF3CDA7}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "UE4Analytics",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "FileLogging",
+			"Enabled": true
+		},
+		{
+			"Name": "AnalyticsMulticast",
+			"Enabled": true
+		}
+	]
+}
