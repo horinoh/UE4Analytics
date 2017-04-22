@@ -14,51 +14,80 @@ class FMyAnalyticsProvider : public IAnalyticsProvider
 public:
 
 	virtual bool StartSession(const TArray<FAnalyticsEventAttribute>& Attributes) override { SessionID = UserID + TEXT("-") + FDateTime::Now().ToString(); return true; }
-	virtual void EndSession() override {}
+	virtual void EndSession() override { if (Events.Num()) { FlushEvents(); } }
 	virtual FString GetSessionID() const override { return SessionID; }
 	virtual bool SetSessionID(const FString& InSessionID) override { SessionID = InSessionID; return true; }
 	virtual void FlushEvents() override
 	{
-		//const auto HttpRequest = FHttpModule::Get().CreateRequest();
-		//HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
-		//HttpRequest->SetURL(TEXT("http://")); //!< #TODO
-		//HttpRequest->SetVerb(TEXT("POST"));
-		//HttpRequest->OnProcessRequestComplete().BindRaw(this, &FMyAnalyticsProvider::OnProcessRequestComplete);
-		//HttpRequest->SetContentAsString(JsonContent);
-		//HttpRequest->ProcessRequest();
+		Root->SetArrayField(TEXT("events"), Events);
 
-		UE_LOG(LogMyAnalytics, Display, TEXT("%s"), *JsonContent);
-		GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::White, *JsonContent);
-		JsonContent.Empty();
+		auto HttpRequest = FHttpModule::Get().CreateRequest();
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+		HttpRequest->SetURL(TEXT("http://localhost/index.php"));
+		HttpRequest->SetVerb(TEXT("POST"));
+		{
+			FString String;
+			const auto Writer = TJsonWriterFactory<>::Create(&String);
+			FJsonSerializer::Serialize(Root.ToSharedRef(), Writer);
+			HttpRequest->SetContentAsString(String);
+
+			UE_LOG(LogMyAnalytics, Display, TEXT("%s"), *String);
+			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::White, *String);
+		}
+		HttpRequest->OnProcessRequestComplete().BindRaw(this, &FMyAnalyticsProvider::OnProcessRequestComplete);
+		HttpRequest->ProcessRequest();
+
+		Events.Empty();
+		Root.Reset();
+		Root = MakeShareable(new FJsonObject());
 	}
 	virtual void SetUserID(const FString& InUserID) override { UserID = InUserID; }
 	virtual FString GetUserID() const override { return UserID; }
 	virtual void RecordEvent(const FString& EventName, const TArray<FAnalyticsEventAttribute>& Attributes) override
 	{
-		JsonContent += TEXT("\"eventName\" : \"") + EventName + TEXT("\"\n");
+		TSharedPtr<FJsonObject> Ev = MakeShareable(new FJsonObject());
+
+		//!< イベント名
+		Ev->SetStringField(TEXT("eventName"), EventName);
+		//!< アトリビュート配列
 		if (Attributes.Num())
 		{
-			JsonContent += TEXT("\"attributes\" : [\n");
+			TArray<TSharedPtr<FJsonValue>> Attrs;
 			for (auto i : Attributes)
 			{
-				JsonContent += TEXT("\t{ \"name\" : \"") + i.AttrName + TEXT("\", \"value\" : \"") + i.AttrValue + TEXT("\"\n");
+				TSharedPtr<FJsonObject> At = MakeShareable(new FJsonObject());
+				At->SetStringField(TEXT("name"), i.AttrName);
+				At->SetStringField(TEXT("value"), i.AttrValue);
+				Attrs.Add(MakeShareable(new FJsonValueObject(At)));
 			}
-			JsonContent += TEXT("]\n");
+			Ev->SetArrayField(TEXT("attributes"), Attrs);
 		}
+
+		//!< イベントを配列に追加
+		Events.Add(MakeShareable(new FJsonValueObject(Ev)));
 	}
 
 	void OnProcessRequestComplete(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded)
 	{
 		if (bSucceeded && HttpResponse.IsValid())
 		{
-			HttpRequest->GetURL();
-			HttpResponse->GetResponseCode();
-			HttpResponse->GetContentAsString();
+			if (EHttpResponseCodes::Ok == HttpResponse->GetResponseCode())
+			{
+				if (HttpRequest->GetVerb() == TEXT("POST"))
+				{
+					const auto String = HttpResponse->GetContentAsString();
+
+					UE_LOG(LogMyAnalytics, Display, TEXT("%s"), *String);
+					GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Yellow, *String);
+				}
+			}
 		}
 	}
 
 private:
 	FString SessionID;
 	FString UserID = FPlatformMisc::GetLoginId();
-	FString JsonContent;
+
+	TSharedPtr<FJsonObject> Root = MakeShareable(new FJsonObject());
+	TArray<TSharedPtr<FJsonValue>> Events;
 };
