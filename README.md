@@ -6,6 +6,7 @@
 
 ## エディタから
 * Edit - Plugins - Analytics - 必要なものにチェックを入れる
+    * FileLogging とか AnalyticsMulticast とか
 
 ## DefaultEngine.ini
 * FileLogging を指定すると、Saved/Analytics/以下にログがJSON形式で出力される
@@ -64,7 +65,7 @@ PrivateDependencyModuleNames.AddRange(
 location / {
 	root   html;
 	#index  index.html index.htm;
-	index  index.php index.html index.htm; //!< index.php を追加
+	index  index.php index.html index.htm; # index.php を追加
 }
 # ↓コメントアウトされているのを有効にする
 location ~ \.php$ {
@@ -72,7 +73,7 @@ location ~ \.php$ {
 	fastcgi_pass   127.0.0.1:9000;
 	fastcgi_index  index.php;
 	#fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
-	fastcgi_param  SCRIPT_FILENAME  C:/nginx/html$fastcgi_script_name; //!< C:/nginx/html を指定
+	fastcgi_param  SCRIPT_FILENAME  C:/nginx/html$fastcgi_script_name; # C:/nginx/html を指定
 	include        fastcgi_params;
 }
 ~~~
