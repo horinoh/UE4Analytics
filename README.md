@@ -48,7 +48,7 @@ PrivateDependencyModuleNames.AddRange(
 ~~~
 
 ## IMoudleInterface を継承しているのを IAnalyticsProviderModule を継承するように変更
-* MyAnalytics.cpp, h を実装する
+* MyAnalytics.cpp.h を実装する
 
 ## MyAnalyticsProvider.h を追加
 * MyAnalyticsProvider.h を実装する
