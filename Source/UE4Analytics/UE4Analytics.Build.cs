@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class UE4Analytics : ModuleRules
 {
-	public UE4Analytics(TargetInfo Target)
+	public UE4Analytics(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore"
         , "Analytics" });

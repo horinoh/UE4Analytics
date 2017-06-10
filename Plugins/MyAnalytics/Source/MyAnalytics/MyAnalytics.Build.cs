@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class MyAnalytics : ModuleRules
 {
-	public MyAnalytics(TargetInfo Target)
+	public MyAnalytics(ReadOnlyTargetRules Target) : base(Target)
 	{
 		
 		PublicIncludePaths.AddRange(
@@ -40,9 +40,9 @@ public class MyAnalytics : ModuleRules
 				"Slate",
 				"SlateCore",
 				// ... add private dependencies that you statically link with here ...	
-                "Analytics",
-                "Http",
-                "Json",
+				"Analytics",
+				"Http",
+				"Json",
 			}
 			);
 		

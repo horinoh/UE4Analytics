@@ -80,17 +80,19 @@ location ~ \.php$ {
 
 ### start.bat を作成
 ~~~
-@ECHO OFF
-start c:\nginx\nginx.exe
-start /b c:\nginx\php\php-cgi.exe -b 127.0.0.1:9000 -c c:\nginx\php\php.ini
+@pushd c:nginx
+start nginx.exe
+start /b php\php-cgi.exe -b 127.0.0.1:9000 -c php\php.ini
+@popd
 ~~~
 
 ### stop.bat を作成
 ~~~
-@ECHO OFF
-c:\nginx\nginx.exe -s quit
+@pushd c:\nginx
+nginx.exe -s quit
 taskkill /f /IM nginx.exe
 taskkill /f /IM php-cgi.exe
+@popd
 ~~~
 
 ### html/index.php を作成

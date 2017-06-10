@@ -5,21 +5,10 @@ using System.Collections.Generic;
 
 public class UE4AnalyticsEditorTarget : TargetRules
 {
-	public UE4AnalyticsEditorTarget(TargetInfo Target)
-	{
-		Type = TargetType.Editor;
-	}
+    public UE4AnalyticsEditorTarget(TargetInfo Target) : base(Target)
+    {
+        Type = TargetType.Editor;
 
-	//
-	// TargetRules interface.
-	//
-
-	public override void SetupBinaries(
-		TargetInfo Target,
-		ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
-		ref List<string> OutExtraModuleNames
-		)
-	{
-		OutExtraModuleNames.AddRange( new string[] { "UE4Analytics" } );
-	}
+        ExtraModuleNames.Add("UE4Analytics");
+    }
 }
