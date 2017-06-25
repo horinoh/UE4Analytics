@@ -16,7 +16,7 @@
 	"Modules": [
 		{
 			"Name": "MyAnalytics",
-			"Type": "Developer",
+			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		}
 	]
