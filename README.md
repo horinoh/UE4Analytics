@@ -10,16 +10,22 @@
 
 ## DefaultEngine.ini
 * FileLogging を指定すると、Saved/Analytics/以下にログがJSON形式で出力される
-* AnalyticsMulticast を指定する場合は ProviderModuleNames は [AnalyticsDevelopment] セクションに書かないとダメみたい
 ~~~
 [Analytics]
-ProviderModuleName=FileLogging
-//ProviderModuleName=AnalyticsMulticast
+ProviderModuleName=AnalyticsMulticast
+ProviderModuleNames=MyAnalytics
 
 [AnalyticsDevelopment]
-//ProviderModuleNames=FileLogging,MyAnalytics
+ProviderModuleName=AnalyticsMulticast
+ProviderModuleNames=FileLogging,MyAnalytics
 
 [AnalyticsTest]
+ProviderModuleName=AnalyticsMulticast
+ProviderModuleNames=FileLogging,MyAnalytics
+
+[AnalyticsDebug]
+ProviderModuleName=AnalyticsMulticast
+ProviderModuleNames=FileLogging,MyAnalytics
 ~~~
 
 ## UE4Analytics.Build.cs
@@ -78,7 +84,7 @@ location ~ \.php$ {
 }
 ~~~
 
-### start.bat を作成
+### start.bat を作成した
 ~~~
 @pushd c:nginx
 start nginx.exe
@@ -86,7 +92,7 @@ start /b php\php-cgi.exe -b 127.0.0.1:9000 -c php\php.ini
 @popd
 ~~~
 
-### stop.bat を作成
+### stop.bat を作成した
 ~~~
 @pushd c:\nginx
 nginx.exe -s quit
@@ -117,4 +123,5 @@ phpinfo();
 * DL して解凍、ここでは C\nginx\php へ配置することにした
 
 ## テスト
-* nginx/start.bat を起動して http://localhost へアクセスしてなんか表示されれば成功
+* nginx/start.bat を起動して、UE4Analytics を実行。
+	* http://localhost へアクセスしてなんか表示されれば成功

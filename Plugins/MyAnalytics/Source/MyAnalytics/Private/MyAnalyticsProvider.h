@@ -6,6 +6,7 @@
 #include "HttpModule.h"
 #include "Interfaces/IHttpRequest.h"
 #include "Interfaces/IHttpResponse.h"
+#include "CondensedJsonPrintPolicy.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogMyAnalytics, Display, All);
 
@@ -27,7 +28,11 @@ public:
 		HttpRequest->SetVerb(TEXT("POST"));
 		{
 			FString String;
+#if UE_BUILD_SHIPPING
+			const auto Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&String);
+#else
 			const auto Writer = TJsonWriterFactory<>::Create(&String);
+#endif
 			FJsonSerializer::Serialize(Root.ToSharedRef(), Writer);
 			HttpRequest->SetContentAsString(String);
 
