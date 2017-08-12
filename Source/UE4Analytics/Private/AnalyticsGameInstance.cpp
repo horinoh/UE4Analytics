@@ -16,21 +16,21 @@ void UAnalyticsGameInstance::Init()
 	{
 		Provider->StartSession();
 
-		//!< イベントを記録 ... 武器店が開いた
+		//!< Weapon Store Opened
 		Provider->RecordEvent(TEXT("WeaponStoreOpened"));
-		//!< 単属性付イベントを記録 ... 剣(Sword23)を装備した
+		//!< Equipped Item(==Sword23)
 		Provider->RecordEvent(TEXT("ItemEquipped"), { TEXT("ItemID"), TEXT("Sword23") });
-		//!< 複数属性付イベントを記録 ... 鉄製で炎属性の剣(Sword100)をクラフトした
+		//!< Crafted Item(==Sword100(Metal==Steel, Modifier==Fire))
 		Provider->RecordEvent(TEXT("ItemCrafted"), {
 			{ TEXT("ItemID"), TEXT("Sword100") },
 			{ TEXT("MetalUsed"), TEXT("Steel") },
 			{ TEXT("DamageModifierType"), TEXT("Fire") },
 		});
-		//!< ゲーム内通貨で購入を記録 ... 10ジェムの剣(Sword23)を1つ購入した 
+		//!< Purchase Item(==Sword23), which costs 10 Gems
 		Provider->RecordItemPurchase(TEXT("Sword23"), TEXT("Gems"), 10, 1);
-		//!< ゲーム内通貨を取得を記録 ... 10ジェムを取得した
+		//!< Got 10 Gems
 		Provider->RecordCurrencyGiven(TEXT("Gems"), 10);
-		//!< リアルマネーでゲーム内通貨購入を記録 ... Paypalにて100ジェムを19ドルで購入した
+		//!< Purchase 100 Gems by 19 USD in Paypal
 		Provider->RecordCurrencyPurchase(TEXT("Gems"), 100, TEXT("USD"), 19.0f, TEXT("Paypal"));
 
 		Provider->FlushEvents();
