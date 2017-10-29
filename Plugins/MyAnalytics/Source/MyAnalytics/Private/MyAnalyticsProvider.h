@@ -62,7 +62,7 @@ public:
 			{
 				TSharedPtr<FJsonObject> At = MakeShareable(new FJsonObject());
 				At->SetStringField(TEXT("name"), i.AttrName);
-				At->SetStringField(TEXT("value"), i.AttrValue);
+				At->SetStringField(TEXT("value"), i.AttrValueString);
 				Attrs.Add(MakeShareable(new FJsonValueObject(At)));
 			}
 			Ev->SetArrayField(TEXT("attributes"), Attrs);
