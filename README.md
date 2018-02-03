@@ -1,15 +1,15 @@
 # UE4Analytics
 
-## 参考
+## 参考 Cf.
 * https://docs.unrealengine.com/latest/INT/Gameplay/Analytics/index.html
 * https://www.unrealengine.com/blog/mobile-analytics-plugins-in-ue4
 
-## エディタから
-* Edit - Plugins - Analytics - 必要なものにチェックを入れる
-    * FileLogging とか AnalyticsMulticast とか
+## エディタから In Editor
+* Edit - Plugins - Analytics - 必要なものにチェックを入れる Add check as necessary
+    * FileLogging とか AnalyticsMulticast とか For example FileLogging, AnalyticsMulticast..
 
 ## DefaultEngine.ini
-* FileLogging を指定すると、Saved/Analytics/以下にログがJSON形式で出力される
+* FileLogging を指定すると、Saved/Analytics/以下にログがJSON形式で出力される If FileLogging is specified, log will outout to Saved/Analytics/ in JSON format 
 ~~~
 [Analytics]
 ProviderModuleName=AnalyticsMulticast
@@ -33,8 +33,8 @@ ProviderModuleNames=FileLogging,MyAnalytics
 PublicDependencyModuleNames.AddRange(new string[] { ..., "Analytics" });
 ~~~
 
-# プラグインの追加
-* Edit - Plugin - New plugin - Blank - "MyAnalytics" として - Create plugin
+# プラグインの追加 Add plugin
+* Edit - Plugin - New plugin - Blank - "MyAnalytics" - Create plugin
 
 ## MyAnalytics.Build.cs
 ~~~
@@ -53,27 +53,27 @@ PrivateDependencyModuleNames.AddRange(
     );
 ~~~
 
-## IMoudleInterface を継承しているのを IAnalyticsProviderModule を継承するように変更
-* MyAnalytics.cpp.h を実装する
+## IMoudleInterface を継承しているのを IAnalyticsProviderModule を継承するように変更 Modify inheriting IMoudleInterface to IAnalyticsProviderModule
+* MyAnalytics.cpp.h を実装する Implement MyAnalytics.cpp.h
 
-## MyAnalyticsProvider.h を追加
-* MyAnalyticsProvider.h を実装する
-    * AnalyticsSwrve.cpp あたりを参考にする
+## MyAnalyticsProvider.h を追加 Add MyAnalyticsProvider.h
+* MyAnalyticsProvider.h を実装する Implement MyAnalyticsProvider.h
+    * AnalyticsSwrve.cpp あたりを参考にする Cf. AnalyticsSwrve.cpp
 
-# テスト用サーバ準備
+# テスト用サーバ準備 Prepare test server
 
 ## Nginx
 * https://nginx.org/en/download.html
-* Stable を DL して解凍、ここでは c:\nginx へ配置することにした
+* Stable を DL して解凍、ここでは c:\nginx へ配置することにした Download Stable, and put to C:\nginx in this case
 
-### conf/nginx.con を編集
+### conf/nginx.conf を編集 Edit conf/nginx.conf
 ~~~
 location / {
 	root   html;
 	#index  index.html index.htm;
 	index  index.php index.html index.htm; # index.php を追加
 }
-# ↓コメントアウトされているのを有効にする
+# ↓コメントアウトされているのを有効にする ↓Enable disabled
 location ~ \.php$ {
 	root           html;
 	fastcgi_pass   127.0.0.1:9000;
@@ -84,7 +84,7 @@ location ~ \.php$ {
 }
 ~~~
 
-### start.bat を作成した
+### start.bat を作成した I created start.bat
 ~~~
 @pushd c:nginx
 start nginx.exe
@@ -92,7 +92,7 @@ start /b php\php-cgi.exe -b 127.0.0.1:9000 -c php\php.ini
 @popd
 ~~~
 
-### stop.bat を作成した
+### stop.bat を作成した I created stop.bat
 ~~~
 @pushd c:\nginx
 nginx.exe -s quit
@@ -101,7 +101,7 @@ taskkill /f /IM php-cgi.exe
 @popd
 ~~~
 
-### html/index.php を作成
+### html/index.php を作成 I created html/index.php 
 ~~~
 <?php
 $json = file_get_contents('php://input');
@@ -120,8 +120,8 @@ phpinfo();
 
 ## PHP
 * http://www.php.net/downloads.php
-* DL して解凍、ここでは C\nginx\php へ配置することにした
+* DL して解凍、ここでは C:\nginx\php へ配置することにした Download and put to C:\nginx\php in this case
 
-## テスト
-* nginx/start.bat を起動して、UE4Analytics を実行。
-	* http://localhost へアクセスしてなんか表示されれば成功
+## テスト Test
+* nginx/start.bat を起動して、UE4Analytics を実行 Invoke nginx/start.bat and execute UE4Analytics
+	* http://localhost へアクセスしてなんか表示されれば成功 Access to http://localhost, and if something is displayed it's OK
