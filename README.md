@@ -63,5 +63,5 @@ PrivateDependencyModuleNames.AddRange(
 ## [テスト用サーバ準備 Prepare test server](https://github.com/horinoh/UE4Analytics/tree/master/Document/Server)
 
 ## テスト Test
-* nginx/start.bat を起動して、UE4Analytics を実行 Invoke nginx/start.bat and execute UE4Analytics
+* start.bat を起動して、UE4Analytics を実行 Invoke start.bat and execute UE4Analytics
 	* http://localhost へアクセスしてなんか表示されれば成功 Access to http://localhost, and if something is displayed it's OK
