@@ -9,7 +9,7 @@ public class MyAnalytics : ModuleRules
 		
 		PublicIncludePaths.AddRange(
 			new string[] {
-				"MyAnalytics/Public"
+				//"MyAnalytics/Public"
 				// ... add public include paths required here ...
 			}
 			);
@@ -17,7 +17,7 @@ public class MyAnalytics : ModuleRules
 		
 		PrivateIncludePaths.AddRange(
 			new string[] {
-				"MyAnalytics/Private",
+				//"MyAnalytics/Private",
 				// ... add other private include paths required here ...
 			}
 			);
