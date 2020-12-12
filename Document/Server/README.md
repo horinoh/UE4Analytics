@@ -1,17 +1,17 @@
-# テスト用サーバ準備 Prepare test server
+# テスト用サーバ準備 (Prepare test server)
 
 ## Nginx
 * https://nginx.org/en/download.html
-* Stable を DL して解凍、ここでは c:\nginx へ配置することにした Download Stable, and put to C:\nginx in this case
+* Stable を DL して解凍、ここでは c:\nginx へ配置することにした (Download Stable, and put to C:\nginx in this case)
 
-### conf/nginx.conf を編集 Edit conf/nginx.conf
+### conf/nginx.conf を編集 (Edit conf/nginx.conf)
 ~~~
 location / {
 	root   html;
 	#index  index.html index.htm;
 	index  index.php index.html index.htm; # index.php を追加
 }
-# ↓コメントアウトされているのを有効にする ↓Enable disabled
+# ↓コメントアウトされているのを有効にする (↓Enable disabled)
 location ~ \.php$ {
 	root           html;
 	fastcgi_pass   127.0.0.1:9000;
@@ -22,7 +22,7 @@ location ~ \.php$ {
 }
 ~~~
 
-### start.bat を作成した I created start.bat
+### start.bat を作成した (I created start.bat)
 ~~~
 @pushd c:nginx
 start nginx.exe
@@ -30,7 +30,7 @@ start /b php\php-cgi.exe -b 127.0.0.1:9000 -c php\php.ini
 @popd
 ~~~
 
-### stop.bat を作成した I created stop.bat
+### stop.bat を作成した (I created stop.bat)
 ~~~
 @pushd c:\nginx
 nginx.exe -s quit
@@ -39,7 +39,7 @@ taskkill /f /IM php-cgi.exe
 @popd
 ~~~
 
-### html/index.php を作成 I created html/index.php 
+### html/index.php を作成 (I created html/index.php) 
 ~~~
 <?php
 $json = file_get_contents('php://input');
@@ -58,4 +58,4 @@ phpinfo();
 
 ## PHP
 * http://www.php.net/downloads.php
-* DL して解凍、ここでは C:\nginx\php へ配置することにした Download and put to C:\nginx\php in this case
+* DL して解凍、ここでは C:\nginx\php へ配置することにした (Download and put to C:\nginx\php in this case)

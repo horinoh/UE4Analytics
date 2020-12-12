@@ -54,11 +54,11 @@ PrivateDependencyModuleNames.AddRange(
 ~~~
 
 ## IMoudleInterface を継承しているのを IAnalyticsProviderModule を継承するように変更 (Modify inheriting IMoudleInterface to IAnalyticsProviderModule)
-* MyAnalytics.cpp.h を実装する Implement MyAnalytics.cpp.h
+* MyAnalytics.cpp.h を実装する (Implement MyAnalytics.cpp.h)
 
 ## MyAnalyticsProvider.h を追加 (Add MyAnalyticsProvider.h)
-* MyAnalyticsProvider.h を実装する Implement MyAnalyticsProvider.h
-    * AnalyticsSwrve.cpp あたりを参考にする Cf. AnalyticsSwrve.cpp
+* MyAnalyticsProvider.h を実装する (Implement MyAnalyticsProvider.h)
+    * AnalyticsSwrve.cpp あたりを参考にする (Cf. AnalyticsSwrve.cpp)
 
 ## [テスト用サーバ準備 (Prepare test server)](https://github.com/horinoh/UE4Analytics/tree/master/Document/Server)
 
